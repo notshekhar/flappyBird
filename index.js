@@ -61,3 +61,6 @@ window.onkeydown = e => {
     b.up()
   }
 }
+canvas.onclick = () =>{
+  b.up()
+}
