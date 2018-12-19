@@ -1,7 +1,7 @@
 let canvas = document.querySelector('#canvas')
 let ctx = canvas.getContext('2d')
 let pipes = new Array()
-let b = new bird(canvas, 15)
+pipes.push(new pipe(canvas))
 let hscore = 0
 if(localStorage.getItem('hscore')){
   console.log(hscore)
@@ -29,9 +29,13 @@ function draw(){
 setInterval(function(){
   score++
   draw()
-  if(pipes.length>20){
-    pipes = pipes.slice(10)
+  for(let i=0; i<pipes.length; i++){
+    if(pipes[i].offscreen()){
+      pipes = pipes.slice(i)
+    }
   }
+  // console.log(pipes)
+  // starting new game on hitting with pipe
   pipes.forEach(pipe=>{
     if(pipe.hits(b)){
       pipe.fillColor(ctx, 'red')
@@ -42,20 +46,17 @@ setInterval(function(){
       }
       score = 0
     }
-    // if(b.y > canvas.height-15){
-    //   pipe.fillColor(ctx, 'red')
-    //   pipes = []
-    //   if(score==hscore){
-    //     console.log('done')
-    //     localStorage.setItem('hscore', score)
-    //   }
-    //   score = 0
-    // }
   })
 }, 20)
 setInterval(function(){
   pipes.push(new pipe(canvas))
-}, 800)
+}, 1000)
+window.onkeydown = e=>{
+  if(e.keyCode == 32){
+    b.up()
+  }
+}
+
 window.onkeydown = e => {
   if(e.keyCode == 32){
     b.up()
