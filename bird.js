@@ -2,12 +2,13 @@ class bird {
   constructor(canvas, size) {
     this.x = 200
     this.y = canvas.height/2
-    this.limit = canvas.height
+    this.limitH = canvas.height
+    this.limitW = canvas.width
     this.v = 0
     this.resistance = 0.90
     this.gravity = 2.0
     this.r = size
-    // this.brain = new fnn([ n    ])
+    this.brain = new fnn([4, 10, 1])
   }
   show(ctx){
     ctx.beginPath()
@@ -19,7 +20,7 @@ class bird {
     this.v += this.gravity
     this.v *= this.resistance
     this.y += this.v
-    if(this.y>this.limit-15){
+    if(this.y>this.limitH-15){
       this.v = 0
       this.gravity = 0
     }else if(this.y<10){
@@ -29,5 +30,22 @@ class bird {
   up(){
     this.v = -25
     this.gravity = 2.0
+  }
+  think(pipes){
+    //finding the closes pipe
+    let closest = null
+    let closestDistance = Infinity
+    pipes.forEach(pipe=>{
+      let d = pipe.x - this.x
+      if(d<closestDistance && d>0){
+        closestDistance = d
+        closest = pipe
+      }
+    })
+    let inputs = [this.y/this.limitH, closest.x/this.limitW, closest.bottomY/this.limitH, closest.topHeight/this.limitH]
+    let  output = this.brain.query(inputs)
+    if(output[0]>0){
+      this.up()
+    }
   }
 }
