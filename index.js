@@ -1,5 +1,6 @@
 let canvas = document.querySelector('#canvas')
 let ctx = canvas.getContext('2d')
+let b = new bird(canvas)
 let pipes = new Array()
 pipes.push(new pipe(canvas))
 let hscore = 0
