@@ -8,7 +8,6 @@ class bird {
     this.resistance = 0.90
     this.gravity = 2.0
     this.r = size
-    this.brain = new fnn([4, 10, 1])
   }
   show(ctx){
     ctx.beginPath()
@@ -42,10 +41,5 @@ class bird {
         closest = pipe
       }
     })
-    let inputs = [this.y/this.limitH, closest.x/this.limitW, closest.bottomY/this.limitH, closest.topHeight/this.limitH]
-    let  output = this.brain.query(inputs)
-    if(output[0]>0){
-      this.up()
-    }
   }
 }
